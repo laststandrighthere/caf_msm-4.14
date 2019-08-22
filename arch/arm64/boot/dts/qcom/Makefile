@@ -433,6 +433,11 @@ sda660-cdp-external-codec-overlay.dtbo-base := sda660-pm660l.dtb
 
 sda660-rcm-external-codec-overlay.dtbo-base := sda660-pm660l.dtb
 else
+ifeq ($(CONFIG_MACH_XIAOMI_SDM660),y)
+dtb-$(CONFIG_MACH_XIAOMI_TULIP) := sdm636-mtp-tulip.dtb
+dtb-$(CONFIG_MACH_XIAOMI_WAYNE) := sdm660-mtp-wayne.dtb sdm660-mtp-jasmine.dtb
+dtb-$(CONFIG_MACH_XIAOMI_WHYRED) := sdm636-mtp-whyred.dtb
+else
 dtb-$(CONFIG_ARCH_SDM660) += sdm660-sim.dtb \
 	sdm660-internal-codec-cdp.dtb \
 	sdm660-internal-codec-mtp.dtb \
@@ -489,6 +494,7 @@ dtb-$(CONFIG_ARCH_SDM660) += sdm660-sim.dtb \
 	sda636-pm660a-mtp.dtb \
 	sda636-pm660a-qrd-hdk.dtb \
 	sda636-pm660a-rcm.dtb
+endif
 endif
 endif
 
