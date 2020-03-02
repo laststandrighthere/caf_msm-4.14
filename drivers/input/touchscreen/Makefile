@@ -110,9 +110,9 @@ obj-$(CONFIG_TOUCHSCREEN_HIMAX_CHIPSET)	+= hxchipset/
 obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_TCM)	+= synaptics_tcm/
 
 obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_DSX_E7S)	+= synaptics_dsx_e7s/
-obj-$(CONFIG_TOUCHSCREEN_NVT_E7S) 	+= nvt_touch_e7s/
-obj-$(CONFIG_KERNEL_CUSTOM_E7S)	+= lct_tp_fm_info.o
-obj-$(CONFIG_KERNEL_CUSTOM_E7S)	+= lct_ctp_selftest.o
-obj-$(CONFIG_KERNEL_CUSTOM_E7S)	+= lct_ctp_upgrade.o
-obj-$(CONFIG_KERNEL_CUSTOM_E7S)	+= lct_if_ctp_upgrade.o
-obj-$(CONFIG_KERNEL_CUSTOM_E7S)	+= lct_tp_gesture.o
+obj-$(CONFIG_TOUCHSCREEN_NVT_E7S) 	+= nvt_touch_e7s/ \
+					   lct_tp_fm_info.o \
+					   lct_ctp_selftest.o \
+					   lct_ctp_upgrade.o \
+					   lct_if_ctp_upgrade.o \
+					   lct_tp_gesture.o
