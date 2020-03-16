@@ -1,4 +1,4 @@
-/* Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015-2020, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -394,6 +394,55 @@ int ipa_smmu_free_sgt(struct sg_table **out_sgt_ptr)
 	}
 	return 0;
 }
+
+/**
+ * ipa_connect() - low-level IPA client connect
+ * @in: [in] input parameters from client
+ * @sps:	[out] sps output from IPA needed by client for sps_connect
+ * @clnt_hdl:   [out] opaque client handle assigned by IPA to client
+ *
+ * Should be called by the driver of the peripheral that wants to connect to
+ * IPA in BAM-BAM mode. these peripherals are USB and HSIC. this api
+ * expects caller to take responsibility to add any needed headers, routing
+ * and filtering tables and rules as needed.
+ *
+ * Returns:     0 on success, negative on failure
+ *
+ * Note:	Should not be called from atomic context
+ */
+int ipa_connect(const struct ipa_connect_params *in, struct ipa_sps_params *sps,
+	u32 *clnt_hdl)
+{
+	int ret;
+
+	IPA_API_DISPATCH_RETURN(ipa_connect, in, sps, clnt_hdl);
+
+	return ret;
+}
+EXPORT_SYMBOL(ipa_connect);
+
+/**
+ * ipa_disconnect() - low-level IPA client disconnect
+ * @clnt_hdl:   [in] opaque client handle assigned by IPA to client
+ *
+ * Should be called by the driver of the peripheral that wants to disconnect
+ * from IPA in BAM-BAM mode. this api expects caller to take responsibility to
+ * free any needed headers, routing and filtering tables and rules as needed.
+ *
+ * Returns:     0 on success, negative on failure
+ *
+ * Note:	Should not be called from atomic context
+ */
+int ipa_disconnect(u32 clnt_hdl)
+{
+	int ret;
+
+	IPA_API_DISPATCH_RETURN(ipa_disconnect, clnt_hdl);
+
+	return ret;
+}
+EXPORT_SYMBOL(ipa_disconnect);
+
 
 /**
  * ipa_clear_endpoint_delay() - Clear ep_delay.
@@ -3161,6 +3210,10 @@ static int ipa_generic_plat_drv_probe(struct platform_device *pdev_p)
 
 	/* call probe based on IPA HW version */
 	switch (ipa_api_hw_type) {
+	case IPA_HW_v2_6L:
+		result = ipa_plat_drv_probe(pdev_p, ipa_api_ctrl,
+			ipa_plat_drv_match);
+		break;
 	case IPA_HW_v3_0:
 	case IPA_HW_v3_1:
 	case IPA_HW_v3_5:
